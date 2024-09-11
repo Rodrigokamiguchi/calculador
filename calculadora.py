@@ -20,6 +20,10 @@ def resto_divisao(a , b):
     if b == 0:
         return "Erro, Divisao por zero"
     return a % b
+def media_aritmetica(numeros):
+    if len(numeros) == 0:
+        return "Erro, sem números para calcular a média"
+    return sum(numeros) / len(numeros)
 
 def mostrar_menu():
     print("Escolha uma operação")
@@ -29,6 +33,7 @@ def mostrar_menu():
     print("4, Divisão")
     print("5, Porcetagem")
     print("6, Resto da Divisão")
+    print("7, Media Aritmetica")
 
 
 while True:
@@ -38,7 +43,7 @@ while True:
     if escolha.lower() == 'sair':
         print(f"Até mais!")
         break
-    if escolha in ['1', '2', '3', '4', '5', '6']:
+    if escolha in ['1', '2', '3', '4', '5', '6', '7']:
         try:
             if escolha == '5':
                 num3 = float(input("Digite o número: "))
@@ -50,6 +55,14 @@ while True:
                 num2 = float(input("Digite o divisor: "))
                 resultado = resto_divisao(num1, num2)
                 print(f"Resultado{resultado}")
+            elif escolha == '7':
+                qtd_numeros = int(input("Quantos numeros deseja calcular a média? "))
+                numeros = []
+                for i in range(qtd_numeros):
+                    numero = float(input(f"Digite o {i+1}º número: "))
+                    numeros.append(numero)
+                resultado = media_aritmetica(numeros)
+                print(f"Media Aritmetica: {resultado}")
             else:
                 num1 = float(input("Digite o primeiro numero: "))
                 num2 = float(input("Digite o segundo numero: "))
