@@ -1,126 +1,137 @@
+#Bibliotecas
+
+import math
+import tkinter as tk
+from tkinter import messagebox
+
+#Apresentação
+
 def main():
+    global nome
     nome = input("Qual o seu nome? ")
     print(f"olá, {nome}! Bem-vindo á calculadora.")
 if __name__ == "__main__":
     main()
 
+# Funções de cálculo
+
 def adicionar (a, b):
+   
     return a + b
+
+
 def subtrair (a, b):
+    
     return a - b 
+
 def multiplicar (a , b):
+    
     return a * b
+
 def dividir(a, b):
+    
     if b == 0:
         return "Erro!!, Divisão por zero"
     return a / b
+
 def porcentagem(a, b):
+    
     return (a * b) / 100
+
 def resto_divisao(a , b):
+   
     if b == 0:
         return "Erro, Divisao por zero"
     return a % b
+
 def media_aritmetica(numeros):
+   
     if len(numeros) == 0:
         return "Erro, sem números para calcular a média"
     return sum(numeros) / len(numeros)
+
 def numero_maior(a, b):
+    
     if a > b:
         return f"O maior numero é: {a:.2f}\nO menor numero é: {b:.2f}"
     elif b > a:
         return f"O maior numero é: {b:.2f}\nO menor numero é: {a:.2f}"
     else:
         return "Os numeros são iguais"
-def idade():
-    ano_atual = int(input("digite o ano atual: "))
-    ano_nascimento = int(input("digite o ano de nascimento: "))
-
-    idade = ano_atual - ano_nascimento
-    print(f"Sua idade é: {idade:.2f}anos")
-def area_do_triangulo():
-    largura = float(input("Digite a largura: "))
-    comprimento = float(input("Digite o comprimento: "))
     
-    area = largura * comprimento
-    print(f"A area do tringulo é: {area:.2f}cm")
-def antecessor_sucessor():
-    numero = int(input("Digite um numero: "))
+def idade(ano_atual, ano_nascimento):
+   
+    return ano_atual - ano_nascimento
 
-    antecessor = numero - 1
-    sucessor = numero + 1 
+def area_do_triangulo(largura, comprimento):
     
-    print(f"O antecessor é: {antecessor:.2f}")
-    print(f"O sucessor é: {sucessor:.2f}")
+   return largura * comprimento
 
-def mostrar_menu():
-    print("Escolha uma operação")
-    print("1, Adição")
-    print("2, Subtração")
-    print("3, Multiplicação")
-    print("4, Divisão")
-    print("5, Porcetagem")
-    print("6, Resto da Divisão")
-    print("7, Media Aritmetica")
-    print("8, Maior e Menor Numero")
-    print("9, Calcular a idade")
-    print("10, Calcular a area do triangulo")
-    print("11, Antecessor e sucessor")
+def antecessor_sucessor(numero):
+  
+  return (numero - 1, numero + 1)
 
+def celsius_to_fahrenheit(celsius):
+    
+    return (celsius*9/5)+32
 
-while True:
-    mostrar_menu()
-    escolha = input("Digite o número da operação (1,2,3,4,5,6...) ou sair para encerrar: ")
+def fahrenheit_to_celsius(fahrenheit):
+   
+    return (fahrenheit-32)*9/5
 
-    if escolha.lower() == 'sair':
-        print(f"Até mais!")
-        break
-    if escolha in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']:
-        try:
-            if escolha == '5':
-                num3 = float(input("Digite o número: "))
-                porcentagem_valor = float(input("Digite a porcetagem: "))
-                resultado = porcentagem(num3, porcentagem_valor)
-                print(f"Resultado {resultado}")
-            elif escolha == '6':
-                num1 = float(input("Digite o dividendo: "))
-                num2 = float(input("Digite o divisor: "))
-                resultado = resto_divisao(num1, num2)
-                print(f"Resultado{resultado}")
-            elif escolha == '7':
-                qtd_numeros = int(input("Quantos numeros deseja calcular a média? "))
-                numeros = []
-                for i in range(qtd_numeros):
-                    numero = float(input(f"Digite o {i+1}º número: "))
-                    numeros.append(numero)
-                resultado = media_aritmetica(numeros)
-                print(f"Media Aritmetica: {resultado}")
-            elif escolha == '8':
-                num1 = float(input("Digite o primeiro número: "))
-                num2 = float(input("Digite o segundo número: "))
+def expotenciacao(a, b):
+    
+    return a ** b
 
-                resultado = numero_maior(num1, num2)
-                print(resultado)
-            elif escolha == '9':
-                idade()
-            elif escolha == '10':
-                area_do_triangulo()
-            elif escolha == '11':
-                antecessor_sucessor()
+def raiz_quadrada(a):
+    
+    if a < 0:
+        return "Erro! Raiz quadrada negativa"
+    return math.sqrt(a)
 
-            else:
-                num1 = float(input("Digite o primeiro numero: "))
-                num2 = float(input("Digite o segundo numero: "))
+#função para exibir resultados
 
-            if escolha == '1':
-                print(f"Resultado: {adicionar(num1, num2)}")
-            elif escolha == '2':
-                print(f"Resultado: {subtrair(num1, num2)}")
-            elif escolha == '3':
-                print(f"Resultado: {multiplicar(num1, num2)}")
-            elif escolha == '4':
-                print(f"Resultado: {dividir(num1, num2)}")
-        except ValueError:
-            print("Entrada inválida, Por favor, insira números válidos.")
+def exibir_resultados(resultado):
+    if isinstance(resultado, str):
+        messagebox.showerro("Erro", resultado)
     else:
-        print("Escolha invalida. Tente novamente.")
+        messagebox.showinfo("Resultado", f"Resultado: {resultado:.2f}")
 
+#função chamada quando o botão é pressionado
+
+def calcular():
+    try:
+        operacao = operacao_var.get()
+        if operacao in ["1", "2", "3", "4" , "5", "6", "7", "8","9", "10", "11", "12", "13", "14", "15"]:
+            if operacao in ["1", "2", "3", "4","5", "6", "8", "14"]:
+                num1 = float(entry_num1.get())
+                num2 = float(entry_num2.get())
+                if operacao == "1":
+                    resultado = adicionar(num1, num2)
+                elif operacao == "2":
+                    resultado = subtrair(num1, num2)
+                elif operacao == "3":
+                    resultado = multiplicar(num1, num2)
+                elif operacao == "4":
+                    resultado = dividir(num1, num2)
+                elif operacao == "5":
+                    resultado = porcentagem(num1, num2)
+                elif operacao == "6":
+                    resultado = resto_divisao(num1, num2)
+                elif operacao == "8":
+                    resultado = numero_maior(num1, num2)
+                elif operacao == "14":
+                    resultado = expotenciacao(num1, num2)
+            elif operacao == "7":
+                numeros = list(map(float, entry_numeros.get().split()))
+                resultado = media_aritmetica(numeros)
+            elif operacao == "9":
+                ano_atual = int(entry_num1.get())
+                ano_nascimento = int(entry_num2.get())
+                resultado = idade(ano_atual, ano_nascimento)
+            elif operacao == "10":
+                
+            elif operacao == "11":
+            elif operacao == "12":
+            elif operacao == "13":
+            elif operacao == "15":
