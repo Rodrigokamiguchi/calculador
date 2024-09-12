@@ -1,6 +1,4 @@
 #Bibliotecas
-
-from ast import Continue
 import math
 import tkinter as tk
 from tkinter import messagebox
