@@ -1,42 +1,72 @@
+import tkinter as tk
+from tkinter import messagebox
 import requests
-def obter_valor(mensagem):
-    while True:
-        try:
-            return float(input(mensagem))
-        except ValueError:
-            print("Entrada inválida! Por favor, insira um valor númerico.")
 
 def obter_taxa(moeda_base, moeda_destino):
     try:
         url = f"https://api.exchangerate-api.com/v4/latest/{moeda_base}"
         response = requests.get(url)
+        response.raise_for_status()
         dados = response.json()
 
-        return dados['rates'][moeda_destino]
-    except Exception as e:
-        print(f"erro ao obter a taxa de câmbio: {e}")
-        return None
+        #verificar se a moeda está presente a resposta
+        if moeda_destino not in dados['rates']:
+            return None
 
+        return dados['rates'][moeda_destino]
+    except requests.RequestException as e:
+        messagebox.showerror("Erro!", f"erro ao obter a taxa de câmbio: {e}")
+        return None
+    except KeyError:
+       messagebox.showerror("Erro!", "Erro ao processar a resposta da API.")
+       return None
+    
 def converter_valor(valor, taxa):
     return valor * taxa
 
-def exibir_resultado(valor, taxa, valor_convertido, moeda_destino):
-    print(f"\nValor original: R${valor: .2f}")
-    print(f"Taxa de conversão: {taxa: .4f}")
-    print(f"Valor convertido: {moeda_destino} {valor_convertido: .2f}")
+def exibir_resultados(valor, taxa, valor_convertido, moeda_destino):
+    resultado = (
+        f"Valor Original: R$ {valor:.2f}"
+        f"\nTaxa de Conversão: {taxa:.2f}"
+        f"\nValor convertido: {moeda_destino} {valor_convertido:.2f}"
+    )
+    messagebox.showinfo("Resultado", resultado)
+
+def calcular():
+    try:
+        valor = float(entry_valor.get())
+        moeda_destino = entry_moeda.get().upper()
+
+        moeda_base = "BRL"
+        taxa = obter_taxa(moeda_base, moeda_destino)
+
+        if taxa:
+            valor_convertido = converter_valor(valor, taxa)
+            exibir_resultados(valor, taxa, valor_convertido, moeda_destino)
+        else:
+            messagebox.showwarning("Aviso", "Nãoo foi possivel obter a taxa de câmbio. Tente novamente mais tarde.")
+
+    except ValueError:
+        messagebox.showerror("Erro", "Entrada invalida! Por favor, insira um valor númerico.")
 
 def main():
-    valor = obter_valor("Informe o valor do produto em reais: R$")
-    moeda_destino = input("Informe o codigo da moeda estrangeira(ex.: USD, EUR, GBP): ").upper()
+    global entry_valor, entry_moeda
 
-    moeda_base = "BRL"
-    taxa = obter_taxa(moeda_base, moeda_destino)
+    root = tk.Tk()
+    root.title("Conversor de Moeda")
 
-    if taxa:
-        valor_convertido = converter_valor(valor, taxa)
-        exibir_resultado(valor, taxa, valor_convertido, moeda_destino)
-    else:
-        print("Não foi possivel obter a taxa de câmbio. Tente novamente mais tarde.")
+    tk.Label(root, text="Informe o valor do produto em reais: R$  ").pack(pady=5)
+    entry_valor= tk.Entry(root)
+    entry_valor.pack(pady=5)
+
+    tk.Label(root, text="Informe o código da moeda extrangeira (ex.: USD, EUR, GBP ...): ").pack(pady=5)
+    entry_moeda = tk.Entry(root)
+    entry_moeda.pack(pady=5)
+
+    tk.Button(root, text="Converter", command=calcular).pack(pady=5)
+    tk.Button(root, text="Sair", command=root.quit).pack(pady=5)
+
+    root.mainloop()
 
 if __name__ == "__main__":
     main()
