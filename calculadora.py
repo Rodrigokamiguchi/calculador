@@ -1,17 +1,11 @@
 #Bibliotecas
 
+from ast import Continue
 import math
 import tkinter as tk
 from tkinter import messagebox
 
-#Apresentação
-
-def main():
-    global nome
-    nome = input("Qual o seu nome? ")
-    print(f"olá, {nome}! Bem-vindo á calculadora.")
-if __name__ == "__main__":
-    main()
+nome = ""
 
 # Funções de cálculo
 
@@ -154,54 +148,88 @@ def calcular():
     except ValueError:
         messagebox.showerror("Erro", "Entrada invalida, por favor insira um números valido.")
 
+
 # Função para sair com mensagem de agradecimento
 def sair():
-    messagebox.showinfo(f"{nome}Obrigado!", "Obrigado por utilizar a calculadora")
+    messagebox.showinfo(f"{nome} Obrigado!", "Obrigado por utilizar a calculadora")
     root.quit()
 
+# Função para a janela de recepção
+def janela_recepcao():
+    global nome
+    def continuar():
+        global nome
+        nome = entry_nome.get()
+        if nome:
+            messagebox.showinfo("Bem-vindo!", f"Olá, {nome}! Bem-vindo à Calculadora.")
+            janela_recepcao.destroy()
+            abrir_calculadora()
+        else:
+            messagebox.showwarning("Aviso", "Por favor, insira seu nome.")
+    
+    janela_recepcao = tk.Tk()
+    janela_recepcao.title("Recepção")
+
+    tk.Label(janela_recepcao, text="Qual o seu nome?").pack(pady=10)
+    entry_nome = tk.Entry(janela_recepcao)
+    entry_nome.pack(pady=10)
+
+    tk.Button(janela_recepcao, text="Continuar", command=continuar).pack(pady=10)
+
+    janela_recepcao.mainloop()
+
 #Criação de janela principal
-root = tk.Tk()
-root.title("Calculadora")
+def abrir_calculadora():
+    global root
+    global operacao_var
+    root = tk.Tk()
+    root.title("Calculadora")
+    operacao_var = tk.StringVar(value="1")
 
-#Variáveis para armazenar a operação e entradas
-operacao_var = tk.StringVar(value="1")
+    #Layout
 
-#Layout
-tk.Label(root, text="Escolha a operação:").pack()
-tk.Radiobutton(root, text="Adição", variable=operacao_var, value="1").pack()
-tk.Radiobutton(root, text="Subtração", variable=operacao_var, value="2").pack()
-tk.Radiobutton(root, text="Multiplicação", variable=operacao_var, value="3").pack()
-tk.Radiobutton(root, text="Divisão", variable=operacao_var, value="4").pack()
-tk.Radiobutton(root, text="Porcentagem", variable=operacao_var, value="5").pack()
-tk.Radiobutton(root, text="Resto da Divisão", variable=operacao_var, value="6").pack()
-tk.Radiobutton(root, text="Média Aritmética", variable=operacao_var, value="7").pack()
-tk.Radiobutton(root, text="Maior e Menor Número", variable=operacao_var, value="8").pack()
-tk.Radiobutton(root, text="Calcular Idade", variable=operacao_var, value="9").pack()
-tk.Radiobutton(root, text="Área do Triângulo", variable=operacao_var, value="10").pack()
-tk.Radiobutton(root, text="Antecessor e Sucessor", variable=operacao_var, value="11").pack()
-tk.Radiobutton(root, text="Celsius para Fahrenheit", variable=operacao_var, value="12").pack()
-tk.Radiobutton(root, text="Fahrenheit para Celsius", variable=operacao_var, value="13").pack()
-tk.Radiobutton(root, text="Exponenciação", variable=operacao_var, value="14").pack()
-tk.Radiobutton(root, text="Raiz Quadrada", variable=operacao_var, value="15").pack()
+    tk.Label(root, text="Escolha a operação:").pack()
+    tk.Radiobutton(root, text="Adição", variable=operacao_var, value="1").pack()
+    tk.Radiobutton(root, text="Subtração", variable=operacao_var, value="2").pack()
+    tk.Radiobutton(root, text="Multiplicação", variable=operacao_var, value="3").pack()
+    tk.Radiobutton(root, text="Divisão", variable=operacao_var, value="4").pack()
+    tk.Radiobutton(root, text="Porcentagem", variable=operacao_var, value="5").pack()
+    tk.Radiobutton(root, text="Resto da Divisão", variable=operacao_var, value="6").pack()
+    tk.Radiobutton(root, text="Média Aritmética", variable=operacao_var, value="7").pack()
+    tk.Radiobutton(root, text="Maior e Menor Número", variable=operacao_var, value="8").pack()
+    tk.Radiobutton(root, text="Calcular Idade", variable=operacao_var, value="9").pack()
+    tk.Radiobutton(root, text="Área do Triângulo", variable=operacao_var, value="10").pack()
+    tk.Radiobutton(root, text="Antecessor e Sucessor", variable=operacao_var, value="11").pack()
+    tk.Radiobutton(root, text="Celsius para Fahrenheit", variable=operacao_var, value="12").pack()
+    tk.Radiobutton(root, text="Fahrenheit para Celsius", variable=operacao_var, value="13").pack()
+    tk.Radiobutton(root, text="Exponenciação", variable=operacao_var, value="14").pack()
+    tk.Radiobutton(root, text="Raiz Quadrada", variable=operacao_var, value="15").pack()
 
-# Entradas
-tk.Label(root, text="Numero 1: ").pack()
-entry_num1 = tk.Entry(root)
-entry_num1.pack()
+    # Entradas
+    tk.Label(root, text="Numero 1: ").pack()
+    global entry_num1
+    entry_num1 = tk.Entry(root)
+    entry_num1.pack()
 
-tk.Label(root, text="Numero 2: ").pack()
-entry_num2 = tk.Entry(root)
-entry_num2.pack()
+    tk.Label(root, text="Numero 2: ").pack()
+    global entry_num2
+    entry_num2 = tk.Entry(root)
+    entry_num2.pack()
 
-tk.Label(root, text="Números (para média): ").pack()
-entry_numeros = tk.Entry(root)
-entry_numeros.pack()
+    tk.Label(root, text="Números (para média): ").pack()
+    global entry_numeros
+    entry_numeros = tk.Entry(root)
+    entry_numeros.pack()
 
-# Botão de cálculo
-tk.Button(root, text="Calcular", command=calcular).pack()
+    # Botão de cálculo
+    tk.Button(root, text="Calcular", command=calcular).pack()
 
-# Botão de saida
-tk.Button(root, text="sair", command=sair).pack()
+    # Botão de saida
+    tk.Button(root, text="sair", command=sair).pack()
 
-# Iniciar o loop da interface grafica
-root.mainloop()
+
+    # Iniciar o loop da interface grafica
+    root.mainloop()
+
+# Iniciar a aplicação com a janela de recepção
+janela_recepcao()
